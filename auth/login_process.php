@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'config.php';
+include '..\config\database.php';
 
 $email = $_POST['email'];
 $password = $_POST['password'];
@@ -14,12 +14,12 @@ if ($data && password_verify($password, $data['password'])) {
     $_SESSION['user_nama'] = $data['nama'];
     echo "<script>
         alert('Login berhasil! Selamat datang, {$data['nama']}');
-        window.location.href = 'index.php'; // ganti ke halaman utama kamu
+        window.location.href = '../items/index.php'; // ganti ke halaman utama 
     </script>";
 } else {
     echo "<script>
         alert('Login gagal! Email atau password salah.');
-        window.location.href = 'login.php';
+        window.location.href = '../auth/login.php';
     </script>";
 }
 ?>

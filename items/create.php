@@ -1,90 +1,21 @@
-<?php include 'config.php'; ?>
 <?php
 session_start();
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit;
 }
-include 'config.php';
+include '../config/database.php';
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8">
   <title>Tambah Barang - Expired Tracker</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    html {
-      overflow-y: scroll;
-    }
-
-    .navbar-custom {
-    background: linear-gradient(135deg, #c2f7dc, #fdfbfb, #a0e9b3); /* hijau mint + putih soft + hijau pastel */
-    transition: background 0.5s ease;
-  }
-
-  .navbar-custom .nav-link {
-    color: #2d2d2d;
-    transition: color 0.3s ease, transform 0.3s ease;
-  }
-
-  .navbar-custom .nav-link:hover {
-    color: #198754; /* Bootstrap green */
-    transform: scale(1.05);
-  }
-
-  .navbar-brand {
-    font-weight: bold;
-    font-size: 1.3rem;
-    color: #198754;
-    transition: transform 0.3s ease;
-  }
-
-  .navbar-brand:hover {
-    transform: scale(1.1);
-  }
-
-  .nav-link.active {
-    color: #157347 !important; /* Active link hijau tua */
-    font-weight: bold;
-  }
-
-  .nav-link.disabled {
-    opacity: 0.7;
-  }
-
-  .navbar-toggler {
-    border: none;
-  }
-
-  .navbar-toggler:focus {
-    outline: none;
-    box-shadow: none;
-  }
-
-  /* 🌸 Background enhancement */
-  body {
-    background: linear-gradient(to bottom right, #f3fff6, #e6f9ee);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
-
-  /* 📦 Table container & spacing */
-  .container {
-    background: #ffffff;
-    border-radius: 15px;
-    padding: 30px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.07);
-  }
-
-  @media (max-width: 991.98px) {
-    .navbar-collapse {
-      transition: all 0.4s ease-in-out;
-    }
-  }
-  </style>
+  <link rel="stylesheet" href="../assets/css/create.css">
 </head>
 <body class="bg-light">
-
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-custom shadow-sm mb-4">
   <div class="container-fluid">
@@ -116,21 +47,19 @@ include 'config.php';
 
 <div class="container">
   <h3 class="mb-4">Tambah Data Barang</h3>
-
   <?php
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nama = $_POST['nama_barang'];
     $kategori = $_POST['kategori'];
     $exp = $_POST['tanggal_kadaluarsa'];
-    $user_id = $_SESSION['user_id']; // Ambil user_id dari session
+    $user_id = $_SESSION['user_id']; 
   
     // Simpan gambar
     $gambarName = $_FILES['gambar']['name'];
     $gambarTmp = $_FILES['gambar']['tmp_name'];
-    $target = "uploads/" . basename($gambarName);
+    $target = "../assets/uploads/" . basename($gambarName);
   
     if (move_uploaded_file($gambarTmp, $target)) {
-      // Ubah query untuk menyertakan user_id
       $stmt = $conn->prepare("INSERT INTO makanan (nama_barang, kategori, tanggal_kadaluarsa, gambar, user_id) VALUES (?, ?, ?, ?, ?)");
       $stmt->bind_param("ssssi", $nama, $kategori, $exp, $gambarName, $user_id);
   
@@ -168,7 +97,6 @@ include 'config.php';
       <label for="tanggal_kadaluarsa" class="form-label">Tanggal Kadaluarsa</label>
       <input type="date" class="form-control" id="tanggal_kadaluarsa" name="tanggal_kadaluarsa" required>
     </div>
-
     <div class="mb-3">
     <label for="gambar" class="form-label">Upload Gambar</label>
     <input type="file" class="form-control" id="gambar" name="gambar" accept="image/*" required>

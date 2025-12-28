@@ -1,5 +1,5 @@
 <?php
-include 'config.php';
+include '../config/database.php';
 
 $id = $_GET['id'];
 $query = $conn->query("SELECT * FROM makanan WHERE id = $id");
@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   if ($_FILES['gambar']['name']) {
     $gambarBaru = uniqid() . '-' . $_FILES['gambar']['name'];
-    move_uploaded_file($_FILES['gambar']['tmp_name'], 'uploads/' . $gambarBaru);
+    move_uploaded_file($_FILES['gambar']['tmp_name'], '../assets/uploads/' . $gambarBaru);
   } else {
     $gambarBaru = $gambarLama;
   }
@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     gambar='$gambarBaru'
     WHERE id=$id");
 
-  header("Location: index.php");
+  header("Location: ../items/index.php");
 }
 ?>
 
@@ -35,38 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <meta charset="UTF-8">
   <title>Edit Data Barang</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    body {
-      background: linear-gradient(to right, #e0f2f1, #f1f8e9);
-      font-family: 'Segoe UI', sans-serif;
-    }
-    .form-card {
-      max-width: 600px;
-      margin: 60px auto;
-      padding: 30px;
-      background: white;
-      border-radius: 20px;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
-    }
-    .form-title {
-      font-weight: 600;
-      color: #2e7d32;
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    .btn-success {
-      background-color: #2e7d32;
-      border: none;
-    }
-    .btn-success:hover {
-      background-color: #1b5e20;
-    }
-    .preview-img {
-      width: 100px;
-      border-radius: 10px;
-      margin-top: 10px;
-    }
-  </style>
+  <link rel="stylesheet" href="../assets/css/update.css">
+
 </head>
 <body>
 
@@ -103,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <div class="mb-3">
         <label class="form-label">Gambar Barang (biarkan kosong jika tidak ingin ubah)</label>
         <input type="file" name="gambar" class="form-control">
-        <img src="uploads/<?= $data['gambar'] ?>" class="preview-img">
+        <img src="../assets/uploads/<?= $data['gambar'] ?>" class="preview-img">
       </div>
 
       <input type="hidden" name="gambar_lama" value="<?= $data['gambar'] ?>">

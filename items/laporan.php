@@ -1,13 +1,11 @@
-<?php include 'config.php'; ?>
 <?php
 session_start();
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit;
 }
-include 'config.php';
+include '../config/database.php';
 
-// Simpan user_id dalam variabel untuk digunakan dalam semua query
 $user_id = $_SESSION['user_id'];
 ?>
 <!DOCTYPE html>
@@ -17,81 +15,9 @@ $user_id = $_SESSION['user_id'];
   <title>Laporan - Expired Tracker</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
-    /* Tetapkan tinggi untuk container grafik */
-    .chart-container {
-      position: relative;
-      height: 300px;
-      width: 100%;
-    }
-
-    .navbar-custom {
-    background: linear-gradient(135deg, #c2f7dc, #fdfbfb, #a0e9b3); /* hijau mint + putih soft + hijau pastel */
-    transition: background 0.5s ease;
-  }
-
-  .navbar-custom .nav-link {
-    color: #2d2d2d;
-    transition: color 0.3s ease, transform 0.3s ease;
-  }
-
-  .navbar-custom .nav-link:hover {
-    color: #198754; /* Bootstrap green */
-    transform: scale(1.05);
-  }
-
-  .navbar-brand {
-    font-weight: bold;
-    font-size: 1.3rem;
-    color: #198754;
-    transition: transform 0.3s ease;
-  }
-
-  .navbar-brand:hover {
-    transform: scale(1.1);
-  }
-
-  .nav-link.active {
-    color: #157347 !important; /* Active link hijau tua */
-    font-weight: bold;
-  }
-
-  .nav-link.disabled {
-    opacity: 0.7;
-  }
-
-  .navbar-toggler {
-    border: none;
-  }
-
-  .navbar-toggler:focus {
-    outline: none;
-    box-shadow: none;
-  }
-
-  /* 🌸 Background enhancement */
-  body {
-    background: linear-gradient(to bottom right, #f3fff6, #e6f9ee);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
-
-  /* 📦 Table container & spacing */
-  .container {
-    background: #ffffff;
-    border-radius: 15px;
-    padding: 30px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.07);
-  }
-
-  @media (max-width: 991.98px) {
-    .navbar-collapse {
-      transition: all 0.4s ease-in-out;
-    }
-  }
-  </style>
+  <link rel="stylesheet" href="../assets/css/laporan.css">  
 </head>
 <body class="bg-light">
-
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-custom shadow-sm mb-4">
   <div class="container-fluid">
@@ -150,7 +76,7 @@ $user_id = $_SESSION['user_id'];
     </div>
   </div>
   
-  <!-- Grafik Baru: Bar Chart Kadaluarsa per Bulan -->
+  <!-- Grafik Bar Chart Kadaluarsa per Bulan -->
   <div class="card shadow-sm mb-4">
     <div class="card-body">
       <h5 class="card-title">Jumlah Barang Kadaluarsa per Bulan</h5>
@@ -160,7 +86,7 @@ $user_id = $_SESSION['user_id'];
     </div>
   </div>
 
-  <!-- DIAGRAM BARU: Line Chart Tren Penambahan Barang -->
+  <!-- DIAGRAM Line Chart Tren Penambahan Barang -->
   <div class="card shadow-sm mb-4">
     <div class="card-body">
       <h5 class="card-title">Tren Penambahan Barang (6 Bulan Terakhir)</h5>
@@ -171,7 +97,7 @@ $user_id = $_SESSION['user_id'];
   </div>
 
   <div class="row">
-    <!-- DIAGRAM BARU: Radar Chart Perbandingan Kategori -->
+    <!-- DIAGRAM Radar Chart Perbandingan Kategori -->
     <div class="col-md-6 mb-4">
       <div class="card shadow-sm">
         <div class="card-body">
@@ -183,7 +109,7 @@ $user_id = $_SESSION['user_id'];
       </div>
     </div>
 
-    <!-- DIAGRAM BARU: Horizontal Bar Chart Risiko Kadaluarsa per Kategori -->
+    <!-- DIAGRAM Horizontal Bar Chart Risiko Kadaluarsa per Kategori -->
     <div class="col-md-6 mb-4">
       <div class="card shadow-sm">
         <div class="card-body">
@@ -307,8 +233,9 @@ $user_id = $_SESSION['user_id'];
   </div>
 </div>
 
+
 <script>
-// Data untuk grafik kategori
+  // Data untuk grafik kategori
 <?php
   // FILTER BY USER_ID
   $kategori_data = $conn->query("SELECT kategori, COUNT(*) as jumlah FROM makanan WHERE user_id = $user_id GROUP BY kategori");
@@ -934,11 +861,7 @@ const bubbleChart = new Chart(bubbleCtx, {
     }
   }
 });
-
 </script>
-
-
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -1,10 +1,10 @@
 <?php
 session_start();
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+    header("Location: '../auth/login.php');");
     exit;
 }
-include 'config.php';
+include '../config/database.php';
 
 // Ambil data filter dan sort
 $kategori = $_GET['filter_kategori'] ?? '';
@@ -25,178 +25,9 @@ $result = $conn->query($sql);
   <meta charset="UTF-8">
   <title>Expired Tracker</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    .navbar-custom {
-    background: linear-gradient(135deg, #c2f7dc, #fdfbfb, #a0e9b3); /* hijau mint + putih soft + hijau pastel */
-    transition: background 0.5s ease;
-  }
-
-  .navbar-custom .nav-link {
-    color: #2d2d2d;
-    transition: color 0.3s ease, transform 0.3s ease;
-  }
-
-  .navbar-custom .nav-link:hover {
-    color: #198754; /* Bootstrap green */
-    transform: scale(1.05);
-  }
-
-  .navbar-brand {
-    font-weight: bold;
-    font-size: 1.3rem;
-    color: #198754;
-    transition: transform 0.3s ease;
-  }
-
-  .navbar-brand:hover {
-    transform: scale(1.1);
-  }
-
-  .nav-link.active {
-    color: #157347 !important;
-    font-weight: bold;
-  }
-
-  .nav-link.disabled {
-    opacity: 0.7;
-  }
-
-  .navbar-toggler {
-    border: none;
-  }
-
-  .navbar-toggler:focus {
-    outline: none;
-    box-shadow: none;
-  }
-
-  body {
-    background: linear-gradient(to bottom right, #f3fff6, #e6f9ee);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
-
-  .alert-success {
-    background: #d4edda;
-    border-left: 5px solid #198754;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    font-size: 1.1rem;
-  }
-
-   .container {
-    background: #ffffff;
-    border-radius: 15px;
-    padding: 30px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.07);
-  }
-
-   /* 🧂 Table style upgrade */
-  table {
-    background: #ffffff;
-    border-radius: 10px;
-    overflow: hidden;
-  }
-
-  th, td {
-    vertical-align: middle !important;
-  }
-
-  .table-hover tbody tr:hover {
-    background-color: #f1fdf5;
-    transition: 0.3s ease;
-  }
-
-  .table-success {
-    background-color: #d2f4df !important;
-  }
-
-  /* 🔘 Button style */
-  .btn {
-    border-radius: 20px;
-    font-size: 0.9rem;
-    padding: 6px 16px;
-  }
-
-  .btn-primary {
-    background-color:rgb(22, 81, 198);
-    border: none;
-  }
-
-  .btn-primary:hover {
-    background-color:rgb(18, 59, 142);
-  }
-
-  .btn-danger:hover {
-    background-color: #c82333;
-  }
-
-  /* 🧁 Badge soft transition */
-  .badge {
-    font-size: 0.9em;
-    padding: 6px 12px;
-    border-radius: 10px;
-    transition: all 0.2s ease-in-out;
-  }
-
-  /* 📱 Responsive */
-  @media (max-width: 767px) {
-    .container {
-      padding: 20px;
-    }
-    .table {
-      font-size: 0.9rem;
-    }
-  }
-
-  @media (max-width: 991.98px) {
-    .navbar-collapse {
-      transition: all 0.4s ease-in-out;
-    }
-  }
-
-  .wave-container {
-  background: linear-gradient(135deg, #d1fae5, #a7f3d0);
-  color: #065f46;
-  font-weight: 500;
-  position: relative;
-  overflow: hidden;
-}
-
-/* Ombak CSS */
-.wave {
-  position: absolute;
-  bottom: 0;
-  width: 200%;
-  height: 80px;
-  background-repeat: repeat-x;
-  background-size: 50% 100%;
-  opacity: 0.6;
-}
-
-.wave-back {
-  background-image: radial-gradient(circle at 25% 40%, rgba(25, 135, 84, 0.6) 20%, transparent 21%);
-  animation: waveMoveBack 8s linear infinite;
-  z-index: 1;
-}
-
-.wave-front {
-  background-image: radial-gradient(circle at 25% 50%, rgba(21, 128, 61, 0.8) 20%, transparent 21%);
-  animation: waveMoveFront 5s linear infinite;
-  z-index: 2;
-}
-
-@keyframes waveMoveBack {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-@keyframes waveMoveFront {
-  0% { transform: translateX(-50%); }
-  100% { transform: translateX(0); }
-}
-  </style>
+  <link rel="stylesheet" href="../assets/css/index.css">
 </head>
 <body class="bg-light">
-
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-custom shadow-sm mb-4">
   <div class="container-fluid">
@@ -284,7 +115,7 @@ $result = $conn->query($sql);
         else $status = '<span class="badge bg-success">Aman</span>';
 
         echo "<tr>
-                <td><img src='uploads/{$row['gambar']}' width='60' class='rounded' alt='gambar barang'></td>
+                <td><img src='../assets/uploads/{$row['gambar']}' width='60' class='rounded' alt='gambar barang'></td>
                 <td>{$row['nama_barang']}</td>
                 <td>{$row['kategori']}</td>
                 <td>{$row['tanggal_kadaluarsa']}</td>
@@ -299,7 +130,6 @@ $result = $conn->query($sql);
     </tbody>
   </table>
 </div>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
